@@ -15,3 +15,8 @@ _fap_shots/
 
 # Publisher credentials (never commit)
 publisher-config/
+
+# Python caches
+__pycache__/
+*.py[cod]
+
