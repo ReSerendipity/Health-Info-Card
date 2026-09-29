@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 200809L /* strnlen */
+
 #include "safety_profile.h"
 
 #include <stdlib.h>
