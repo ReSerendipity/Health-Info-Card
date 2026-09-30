@@ -1,0 +1,15 @@
+title: AI Passport Senior Safety Card
+description: Documentation for the AI Passport Senior Safety Card project.
+url: https://reserendipity.github.io
+baseurl: /Health-Info-Card
+theme: minima
+markdown: GFM
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-relative-links
+optional_front_matter:
+  remove_originals: true
+relative_links:
+  enabled: true
+  collections: true
