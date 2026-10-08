@@ -20,3 +20,6 @@ publisher-config/
 __pycache__/
 *.py[cod]
 
+
+# AI 工具链产物，不入库
+.qoder/
