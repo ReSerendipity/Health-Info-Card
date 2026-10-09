@@ -7,17 +7,19 @@
 Senior Safety Card turns FoloToy AI Passport into an offline, wearable help
 card for an older adult who may become lost or need assistance. It can show the
 wearer's name and help message, family contacts, approximate home area, health
-notes, and a family member's WeChat QR code.
+notes, and up to four WeChat QR codes (family, backup, community doctor, or
+other contacts).
 
 ## How it works
 
 1. On first boot, scan the Wi-Fi QR code shown by the device.
 2. The phone joins a password-protected local hotspot and opens the setup page.
-3. Enter the safety information and optionally upload a family WeChat QR code.
+3. Enter the safety information and optionally upload up to four WeChat QR
+   codes.
 4. Save the profile. The device stores it locally and immediately turns Wi-Fi
    off.
-5. Use UP and DOWN to change pages. On the WeChat page, press OK to show the QR
-   code; press any key to return.
+5. Use UP and DOWN to change pages. On a QR-code page, press OK to show the
+   code full screen; press any key to return.
 6. Hold OK to reopen local setup. A configured management PIN is required by
    the setup page.
 
@@ -29,7 +31,7 @@ device.
 
 - Profile data stays in the device's NVS partition and is never uploaded to an
   internet service.
-- The family QR image stays in the device's `imgstore` partition.
+- Family WeChat QR images stay in the device's `imgstore` partition.
 - A management PIN is stored only as a random salt and SHA-256 digest.
 - Full home address display is opt-in, and the main phone number can be masked.
 - Wi-Fi and its local web server run only during setup. Bluetooth is disabled
@@ -66,6 +68,10 @@ Publish and install only `build/FoloToy-AI-Passport-full.bin`. On a provisioned
 device, prefer the AI Passport mini-program Recovery flow. Never use
 `erase-flash`; it destroys per-device identity and the permanent Recovery.
 
-Build success is not device validation. Confirm the first-setup flow, all five
+Build success is not device validation. Confirm the first-setup flow, all
 pages, QR scanning, PIN protection, one-minute sleep, key wake, and Recovery
 entry on physical hardware before treating a release as hardware-verified.
+
+## License
+
+Licensed under the MIT License. See [LICENSE](LICENSE). Copyright (c) 2026 FoloToy.
