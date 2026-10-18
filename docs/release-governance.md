@@ -9,7 +9,7 @@
 
 ---
 
-## 0. Remote-first (root principle, non-negotiable)
+## 0. Remote-first（远端优先）— root principle, non-negotiable
 
 The release chain — build, packaging, scanning, upload, push — **all happens on GitHub Actions runners in the cloud**. Local work is limited to three light actions: bump the version, update CHANGELOG, and `git tag` + `git push`. No local packaging, image builds, or release uploads.
 
