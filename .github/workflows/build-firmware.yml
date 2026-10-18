@@ -64,9 +64,17 @@ jobs:
           name: ${{ needs.build.outputs.artifact_name }}
           path: release
 
+      - name: Generate SHA256SUMS.txt
+        run: |
+          cd release
+          sha256sum FoloToy-AI-Passport-full.bin > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
       - name: Create release (tag push)
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           name: "${{ github.ref_name }}"
-          files: release/FoloToy-AI-Passport-full.bin
+          files: |
+            release/FoloToy-AI-Passport-full.bin
+            release/SHA256SUMS.txt
           if-no-files-found: error
