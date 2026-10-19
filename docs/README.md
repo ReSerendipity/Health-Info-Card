@@ -9,7 +9,7 @@ The repository is organized around the following principles:
 - `main` is the smallest complete runnable baseline and an executable description of the current hardware capabilities.
 - `components/bsp` isolates board-level details and exposes stable APIs to applications.
 - `demo/*` branches show different paths from a product requirement to a working implementation.
-- Development conventions for AI assistants live in [`AGENTS.md`](../AGENTS.md) and [`docs/development/agent-guide.md`](development/agent-guide.md); the complete hardware context and troubleshooting knowledge is in [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md).
+- Development conventions for AI assistants live in [`local/AGENTS.md`](../local/AGENTS.md) and [`docs/development/agent-guide.md`](development/agent-guide.md); the complete hardware context and troubleshooting knowledge is in [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md).
 - Build results and physical-device results are reported separately. A successful build must never be presented as successful hardware validation.
 
 ## Hardware capability contract
@@ -44,7 +44,7 @@ A simple request can be given directly to an AI assistant:
 Build an offline habit-tracking application for FoloToy AI Passport.
 Use the three physical buttons and the 240×320 display, and preserve records across power loss.
 Start from `main`, create a `feature/*` branch, and develop the application there.
-Follow AGENTS.md and docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md. Inspect relevant demo branches and plays/ applications first,
+Follow local/AGENTS.md and docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md. Inspect relevant demo branches and plays/ applications first,
 keep hardware logic in components/bsp and application logic in main, deliver a runnable
 implementation with tests, and report the build result, unexecuted device checks, and exact
 on-device acceptance steps separately.
@@ -106,8 +106,8 @@ docs/                    Project docs, changelog, engineering/contribution rules
 sdkconfig.defaults       ESP32-C3, USB console, Flash, and LVGL defaults
 partitions.csv           App plus protected identity/Recovery layout
 dependencies.lock        Reproducible ESP-IDF Managed Component resolution
-AGENTS.md                Mandatory AI-agent entry point (paired with AGENTS.zh_CN.md)
-CLAUDE.md                Claude Code pointer to AGENTS.md (paired Chinese version)
+local/AGENTS.md                Mandatory AI-agent entry point (paired with local/AGENTS.zh_CN.md)
+local/CLAUDE.md                Claude Code pointer to local/AGENTS.md (paired Chinese version)
 LICENSE                  Repository license
 ```
 
@@ -116,7 +116,7 @@ LICENSE                  Repository license
 - [`docs/INDEX.md`](INDEX.md) — complete documentation index for contribution, engineering, fork, software, and hardware topics.
 - [`docs/development/agent-guide.md`](development/agent-guide.md) — AI-assisted development workflow, source priorities, BSP boundaries, runtime rules, and delivery format.
 - [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md) — pin map, acceptance matrix, and troubleshooting guide.
-- [`AGENTS.md`](../AGENTS.md) — mandatory entry point for AI-assisted work.
+- [`local/AGENTS.md`](../local/AGENTS.md) — mandatory entry point for AI-assisted work.
 - [`docs/fork-guide.md`](fork-guide.md) — fork branch and documentation workflow.
 
-> This README describes the product and repository. AI agents must begin with `AGENTS.md` and follow its task-specific routing.
+> This README describes the product and repository. AI agents must begin with `local/AGENTS.md` and follow its task-specific routing.

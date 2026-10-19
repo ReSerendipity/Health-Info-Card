@@ -4,11 +4,11 @@
 
 # AI Agent Development Guide
 
-This guide is for AI coding assistants. `AGENTS.md` is the only mandatory starting document; read this guide for code work and route to hardware or engineering references only when the task requires them.
+This guide is for AI coding assistants. `local/AGENTS.md` is the only mandatory starting document; read this guide for code work and route to hardware or engineering references only when the task requires them.
 
 ## Establish context
 
-1. Read `AGENTS.md` and follow its task routing. Do not load every README or the entire hardware guide by default.
+1. Read `local/AGENTS.md` and follow its task routing. Do not load every README or the entire hardware guide by default.
 2. Run `git status --short --branch` and preserve existing changes.
 3. Read affected public headers, implementations, and neighboring code. Do not infer this board's behavior from a generic ESP32-C3 board.
 4. Search `origin/demo/*` for a relevant example and reuse only applicable design ideas.

@@ -20,10 +20,6 @@ SECRET_PATTERNS = {
     "private key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
 }
 ROOT_MARKDOWN_ALLOWLIST = {
-    "AGENTS.md",
-    "AGENTS.zh_CN.md",
-    "CLAUDE.md",
-    "CLAUDE.zh_CN.md",
     "README.md",
     "README.zh_CN.md",
 }
@@ -55,10 +51,10 @@ def text_files() -> list[Path]:
 
 def check_required_files(errors: list[str]) -> None:
     required = (
-        "AGENTS.md",
-        "AGENTS.zh_CN.md",
-        "CLAUDE.md",
-        "CLAUDE.zh_CN.md",
+        "local/AGENTS.md",
+        "local/AGENTS.zh_CN.md",
+        "local/CLAUDE.md",
+        "local/CLAUDE.zh_CN.md",
         "docs/CHANGELOG.md",
         ".github/CONTRIBUTING.md",
         ".github/CODE_OF_CONDUCT.md",
