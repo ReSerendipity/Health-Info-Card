@@ -9,7 +9,7 @@ FoloToy AI Passport 是一个开放式可穿戴 AI 硬件，本仓库是这款 A
 - `main` 是最小但完整的可运行基线，也是当前硬件能力的可执行说明；
 - `components/bsp` 隔离板级差异，为应用提供稳定 API；
 - `demo/*` 分支展示从需求到成品的不同实现路径；
-- AI 开发约定见 [`AGENTS.zh_CN.md`](../AGENTS.zh_CN.md) 与 [`docs/development/agent-guide.zh_CN.md`](development/agent-guide.zh_CN.md)；完整硬件上下文和故障知识见 [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.zh_CN.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.zh_CN.md)；
+- AI 开发约定见 [`local/AGENTS.zh_CN.md`](../local/AGENTS.zh_CN.md) 与 [`docs/development/agent-guide.zh_CN.md`](development/agent-guide.zh_CN.md)；完整硬件上下文和故障知识见 [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.zh_CN.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.zh_CN.md)；
 - 构建结果与真机结果分开记录，禁止把"编译通过"描述成"硬件验证通过"。
 
 ## 硬件能力契约
@@ -44,7 +44,7 @@ FoloToy AI Passport 是一个开放式可穿戴 AI 硬件，本仓库是这款 A
 请为 FoloToy AI Passport 开发一个离线习惯打卡应用。
 使用三个实体按键和 240×320 屏幕，记录保存在掉电不丢失的存储中。
 从 `main` 开始，创建 `feature/*` 分支并在该分支上开发。
-遵守 AGENTS.md 和 docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md；先查找相关 demo 分支与 plays/ 应用，
+遵守 local/AGENTS.md 和 docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md；先查找相关 demo 分支与 plays/ 应用，
 保持硬件逻辑在 components/bsp、应用逻辑在 main，完成可运行实现与测试，
 最后分别报告构建结果、未执行的真机项目和逐项验收方法。
 ```
@@ -105,8 +105,8 @@ docs/                    项目说明、变更记录、工程/协作规范与设
 sdkconfig.defaults       ESP32-C3、USB console、Flash、LVGL 默认配置
 partitions.csv           应用与设备身份/Recovery 保护分区布局
 dependencies.lock        可复现的 ESP-IDF Managed Component 解析结果
-AGENTS.md                AI agent 必读入口（与 AGENTS.zh_CN.md 配对）
-CLAUDE.md                Claude Code 指向 AGENTS.md 的入口（含中文配对）
+local/AGENTS.md                AI agent 必读入口（与 local/AGENTS.zh_CN.md 配对）
+local/CLAUDE.md                Claude Code 指向 local/AGENTS.md 的入口（含中文配对）
 LICENSE                  仓库许可证
 ```
 
@@ -115,7 +115,7 @@ LICENSE                  仓库许可证
 - [`docs/INDEX.zh_CN.md`](INDEX.zh_CN.md) — 全部文档索引（协作规范、工程规范、fork 工作流、软硬件设计）。
 - [`docs/development/agent-guide.zh_CN.md`](development/agent-guide.zh_CN.md) — AI 开发工作流（上下文建立、事实来源优先级、BSP 边界、运行时规则、交付格式）。
 - [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.zh_CN.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.zh_CN.md) — 硬件开发指南（引脚表、验收矩阵、故障速查）。
-- [`AGENTS.zh_CN.md`](../AGENTS.zh_CN.md) — AI 协作规范入口。
+- [`local/AGENTS.zh_CN.md`](../local/AGENTS.zh_CN.md) — AI 协作规范入口。
 - [`docs/fork-guide.zh_CN.md`](fork-guide.zh_CN.md) — fork 工作流。
 
-> 注：本 README 只描述产品与仓库，不含给 AI 的执行说明；AI 开始开发前请先读根目录 `AGENTS.zh_CN.md`，再按任务路由读取相关文档。
+> 注：本 README 只描述产品与仓库，不含给 AI 的执行说明；AI 开始开发前请先读根目录 `local/AGENTS.zh_CN.md`，再按任务路由读取相关文档。

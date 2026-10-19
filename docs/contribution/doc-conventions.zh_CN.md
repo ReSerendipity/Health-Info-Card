@@ -16,8 +16,8 @@
 
 ## 按任务加载上下文
 
-- 所有任务只强制先读仓库根 `AGENTS.md`。
-- 按 `AGENTS.md` 的路由表读取与当前修改相关的文档和源码，不默认读取全部 README。
+- 所有任务只强制先读仓库根 `local/AGENTS.md`。
+- 按 `local/AGENTS.md` 的路由表读取与当前修改相关的文档和源码，不默认读取全部 README。
 - 产品总览见 `docs/README.md`；需要发现其它文档时再读取 `docs/INDEX.md`。
 - 修改某个事实时，更新其权威来源以及直接引用该事实的文档，不复制新的事实源。
 
@@ -29,7 +29,7 @@
 
 ## 放置位置
 
-- 仓库根目录仅保留工具发现入口（`AGENTS.md`、`CLAUDE.md` 及其翻译）、可选的 fork README 配对、许可证、构建清单和 ESP-IDF 配置。
+- 仓库根目录仅保留工具发现入口（`local/AGENTS.md`、`local/CLAUDE.md` 及其翻译）、可选的 fork README 配对、许可证、构建清单和 ESP-IDF 配置。
 - 项目说明与变更历史放入 `docs/`，按协作、开发、硬件和软件职责分类。
 - GitHub 自动识别的社区文档、模板、Issue Form 和 workflow 放入 `.github/`。
 - 可复用资源放入 `assets/`，项目 skill 放入 `skills/`，自动化脚本放入 `tools/`。

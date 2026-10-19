@@ -16,7 +16,7 @@ Document scope:
 
 ## 1. Before changing hardware-facing code
 
-1. Read `AGENTS.md`, this guide, and the affected BSP header/implementation.
+1. Read `local/AGENTS.md`, this guide, and the affected BSP header/implementation.
 2. Run `git status --short --branch` and preserve unrelated changes.
 3. Put reusable hardware behavior in `components/bsp`; keep menu, animation, product interaction, and validation pages in `main`.
 4. Keep pins, I2C addresses, and panel dimensions in `bsp_pins.h` only.

@@ -17,7 +17,7 @@ These rules apply equally to human contributors and AI agents. Documentation is 
 
 ## Task-based context
 
-- Every task starts with root `AGENTS.md` only.
+- Every task starts with root `local/AGENTS.md` only.
 - Follow its routing table and read only documents and source relevant to the change.
 - Use `docs/README.md` for the overview and `docs/INDEX.md` for discovery.
 - Update the authoritative source of a changed fact and documents that directly reference it; do not create a second source of truth.
@@ -30,7 +30,7 @@ These rules apply equally to human contributors and AI agents. Documentation is 
 
 ## Placement
 
-- Keep the tracked repository root limited to tool-discovery files (`AGENTS.md`, `CLAUDE.md` and their translations), an optional fork README pair, license/build manifests, and ESP-IDF configuration.
+- Keep the tracked repository root limited to tool-discovery files (`local/AGENTS.md`, `local/CLAUDE.md` and their translations), an optional fork README pair, license/build manifests, and ESP-IDF configuration.
 - Put project documentation and history in `docs/`, grouped by contribution, development, hardware, and software responsibility.
 - Put GitHub-recognized community files, templates, issue forms, and workflows in `.github/`.
 - Put reusable binary/source assets in `assets/`, project skills in `skills/`, and automation in `tools/`.
