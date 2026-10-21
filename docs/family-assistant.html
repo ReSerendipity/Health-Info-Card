@@ -31,6 +31,8 @@ button.link{background:none;color:var(--accent);padding:4px 8px;font-weight:600}
 .field .count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .field.over input,.field.over textarea{border-color:var(--accent);background:#fff5f5}
 .field.over .count{color:var(--accent);font-weight:700}
+.field.warn input,.field.warn textarea{border-color:#b45309;background:#fffaf0}
+.field.warn .count{color:#b45309;font-weight:700}
 .msg{font-size:14px;padding:11px 13px;border-radius:8px;margin:12px 0 0;display:none;white-space:pre-wrap}
 .msg.err{display:block;background:#fff2f2;border:1px solid #f3c2c2;color:#8f1d1d}
 .msg.ok{display:block;background:#f0fbf4;border:1px solid #bfe6d2;color:var(--ok)}
@@ -94,9 +96,9 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
 
     <div class="row">
       <button class="ghost" id="copyAll">复制全部（按设备设置页顺序）</button>
-      <button class="ghost" id="shrink">让 AI 压缩超长字段</button>
+      <button class="ghost" id="shrink">让 AI 修复超长与缺字</button>
     </div>
-    <p class="hint">每个字段右侧的数字是该字段在设备设置页里的字符上限（中文按 1 字计）。超出会标红，写进设备前必须压到上限内。</p>
+    <p class="hint">每个字段右侧的数字是该字段在设备设置页里的字符上限（中文按 1 字计）。超长标红；含全角标点标黄——设备字库只有 ASCII 与 GB2312 一级汉字，全角符号会显示成问号。写入设备前两者都要清掉。</p>
   </div>
 
   <div class="card">
@@ -150,6 +152,10 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
 
   function lengthOf(s){ return Array.from(s || "").length; }
 
+  // 设备字库只有 ASCII + GB2312 一级汉字，全角标点会渲染成问号
+  var GLYPH_BAD = /[\u00B7\u2018\u2019\u201C\u201D\u2013\u2014\u2026\u3000-\u303F\uFF00-\uFFEF]/g;
+  function badGlyphs(s){ return Array.from(new Set(String(s || "").match(GLYPH_BAD) || [])); }
+
   function buildPrompt(raw){
     var limits = FIELDS.map(function(f){ return f.k + "（≤" + f.max + " 字）" + f.label; }).join("\n");
     return [
@@ -168,7 +174,8 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
       "4. help 用第一人称，是老人对陌生路人说的话。",
       "5. medical 压成短句，用分号分隔，只保留过敏、慢病、常用药、照护要点。",
       "6. 每个字段必须严格不超过上限；宁可更短，不可超长。",
-      "7. 只输出 JSON 对象本身，不要 markdown 代码块，不要任何解释文字。",
+      "7. 【字形约束】设备字库只有 ASCII(0x20-0x7E) 与 GB2312 一级汉字。严禁使用任何全角标点或全角符号（，。；：！？、（）【】「」《》…—·～以及全角引号），一律改用半角 , . ; : ! ? / - 与空格；也不要用 emoji。违反此条会在设备上显示为问号。",
+      "8. 只输出 JSON 对象本身，不要 markdown 代码块，不要任何解释文字。",
       "",
       "JSON 键：" + FIELDS.map(function(f){return f.k;}).join(", ") + ", speech, plain, missing",
       "",
@@ -253,15 +260,18 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
     var host = $("fields");
     host.innerHTML = "";
     var over = [];
+    var glyphs = [];
 
     FIELDS.forEach(function(f){
       var val = obj[f.k] == null ? "" : String(obj[f.k]);
       var n = lengthOf(val);
       var isOver = n > f.max;
       if (isOver) over.push(f.k);
+      var bad = badGlyphs(val);
+      if (bad.length) glyphs.push(f.k);
 
       var wrap = document.createElement("div");
-      wrap.className = "field" + (isOver ? " over" : "");
+      wrap.className = "field" + (isOver ? " over" : "") + (bad.length ? " warn" : "");
       wrap.dataset.k = f.k;
 
       var head = document.createElement("div");
@@ -288,9 +298,8 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
       inp.addEventListener("input", function(){
         var m = lengthOf(inp.value);
         cnt.textContent = m + " / " + f.max;
-        var bad = m > f.max;
-        wrap.classList.toggle("over", bad);
-        cnt.style.color = bad ? "" : "";
+        wrap.classList.toggle("over", m > f.max);
+        wrap.classList.toggle("warn", badGlyphs(inp.value).length > 0);
       });
 
       wrap.appendChild(head);
@@ -311,9 +320,11 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
 
     $("result").style.display = "block";
     if (over.length){
-      setMsg("err", "有 " + over.length + " 个字段超出设备上限：" + over.join("、") + "。请点「让 AI 压缩超长字段」，或手动删减后再写入设备。");
+      setMsg("err", "有 " + over.length + " 个字段超出设备字符上限（" + over.join("、") + "）。请点「让 AI 修复超长与缺字」，或手动删减后再写入设备。");
+    } else if (glyphs.length){
+      setMsg("err", "有 " + glyphs.length + " 个字段含设备字库不支持的全角符号（" + glyphs.join("、") + "），在设备上会显示成问号。请点「让 AI 修复超长与缺字」换成半角后再写入。");
     } else {
-      setMsg("ok", "已生成，所有字段都在设备字符上限内。请核对事实无误后，再填入设备设置页。");
+      setMsg("ok", "已生成：字段长度与字形都在设备可显示范围内。请核对事实无误后，再填入设备设置页。");
     }
     $("result").scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -327,10 +338,19 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
 
   $("shrink").onclick = async function(){
     if (!lastResult) return;
-    var bad = FIELDS.filter(function(f){ return lengthOf(lastResult[f.k]) > f.max; });
-    if (!bad.length){ setMsg("ok", "当前没有超长字段，无需压缩。"); return; }
-    var extra = "下面这些字段当前超长，请在保持事实不变的前提下压缩到上限内，其余字段原样返回：\n"
-      + bad.map(function(f){ return f.k + " 当前 " + lengthOf(lastResult[f.k]) + " 字，上限 " + f.max + " 字：\"\"\"" + lastResult[f.k] + "\"\"\""; }).join("\n")
+    var bad = FIELDS.filter(function(f){
+      return lengthOf(lastResult[f.k]) > f.max || badGlyphs(lastResult[f.k]).length;
+    });
+    if (!bad.length){ setMsg("ok", "当前没有超长或含缺字字段，无需修复。"); return; }
+    var extra = "下面这些字段需要修复。请在保持事实不变的前提下，(a) 把超长的压到上限内，(b) 把全角标点全部换成半角或直接去掉。其余字段原样返回：\n"
+      + bad.map(function(f){
+          var cur = lastResult[f.k];
+          var why = [];
+          if (lengthOf(cur) > f.max) why.push("当前 " + lengthOf(cur) + " 字，上限 " + f.max);
+          var g = badGlyphs(cur);
+          if (g.length) why.push("含设备不支持的全角符号 " + g.join(""));
+          return f.k + "（" + why.join("；") + "）：\"\"\"" + cur + "\"\"\"";
+        }).join("\n")
       + "\n仍然只输出完整 JSON。";
     try {
       var obj = await callModel($("raw").value, extra);
