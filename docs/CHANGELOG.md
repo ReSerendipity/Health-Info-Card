@@ -6,6 +6,14 @@
 
 ## Unreleased
 
+- Added `docs/family-assistant.html`, a dependency-free single-file page for
+  families. A spoken-style description is sent from the browser to Alibaba
+  Cloud Bailian (Qwen) and returns the 12 device fields, a TTS help script and
+  a plain-language health note. Field lengths are validated against the real
+  `maxlength` values in `main/safety_portal.c`; over-long output is highlighted
+  and can be re-compressed by the model. Missing facts are left blank and
+  listed as suggested additions instead of being invented. The API key stays
+  in local storage only; the device remains fully offline.
 - Multi-slot QR storage: the imgstore partition is now split into four
   upload slots (28 KiB each, ~112 KiB total, still ~90% budget). The portal
   exposes four upload fields (family / backup / community-doctor / other);

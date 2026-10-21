@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>安心牌 · 家属 AI 信息整理</title>
+<style>
+:root{--ink:#12161a;--muted:#5d6b76;--line:#d9e0e6;--bg:#f4f6f8;--card:#fff;--accent:#d71920;--ok:#0a7a45;--warn:#b45309}
+*{box-sizing:border-box}
+body{margin:0;padding:18px 14px 60px;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:760px;margin:0 auto}
+h1{font-size:21px;margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 14px}
+h2{font-size:16px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+label{display:block;font-weight:600;margin:14px 0 6px;font-size:14px}
+label:first-of-type{margin-top:0}
+textarea,input,select{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:inherit}
+textarea{min-height:120px;resize:vertical}
+textarea:focus,input:focus,select:focus{outline:none;border-color:#8a97a3}
+button{font:inherit;font-weight:600;border:0;border-radius:8px;padding:12px 18px;cursor:pointer;background:var(--ink);color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+button.link{background:none;color:var(--accent);padding:4px 8px;font-weight:600}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.row>*{flex:1 1 180px}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.field{margin:0 0 12px}
+.field .head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:5px}
+.field .name{font-size:13px;font-weight:600}
+.field .count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.field.over input,.field.over textarea{border-color:var(--accent);background:#fff5f5}
+.field.over .count{color:var(--accent);font-weight:700}
+.msg{font-size:14px;padding:11px 13px;border-radius:8px;margin:12px 0 0;display:none;white-space:pre-wrap}
+.msg.err{display:block;background:#fff2f2;border:1px solid #f3c2c2;color:#8f1d1d}
+.msg.ok{display:block;background:#f0fbf4;border:1px solid #bfe6d2;color:var(--ok)}
+.msg.busy{display:block;background:#f6f8fa;border:1px solid var(--line);color:var(--muted)}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:#eef2f5;color:var(--muted);margin-left:6px}
+.tag.ai{background:#fff0f0;color:var(--accent)}
+details summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--muted)}
+.speech{background:#12161a;color:#fff;border-radius:10px;padding:14px;margin-top:8px}
+.speech .k{font-size:12px;color:#9fb0bd;margin:0 0 6px}
+.speech .v{font-size:17px;font-weight:600;line-height:1.6}
+.missing{background:#fffbeb;border:1px solid #f5e3b8;border-radius:8px;padding:12px;font-size:14px;color:#7a4f10;margin-top:12px}
+.missing b{display:block;margin-bottom:4px}
+.privacy{font-size:13px;color:var(--muted);line-height:1.7}
+.privacy strong{color:var(--ink)}
+kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>安心牌 · 家属 AI 信息整理</h1>
+  <p class="sub">把您口述的老人信息，整理成设备可直接显示的字段。全部计算在您的浏览器与本机填写的 API Key 下完成。</p>
+
+  <div class="card">
+    <h2>1. 说出您想放进去的信息</h2>
+    <textarea id="raw" placeholder="例如：我爸王建国，68岁，O型血，住在上海市徐汇区田林街道。他有高血压，每天早晚吃氨氯地平，对青霉素过敏。我电话 138 0000 1234，是我女儿；我姐王丽 139 0000 5678 是备用。真迷路了就跟人家说我可能迷路了想回家。"></textarea>
+    <div class="row">
+      <button class="ghost" id="demo">填入示例</button>
+      <button class="ghost" id="clear">清空</button>
+    </div>
+    <p class="hint">不必写完整，缺的信息 AI 不会编造，会在下方"建议补充"里列出。</p>
+  </div>
+
+  <div class="card">
+    <h2>2. 连接模型</h2>
+    <label for="key">DashScope API Key</label>
+    <input id="key" type="password" autocomplete="off" placeholder="sk-...">
+    <label for="model">模型</label>
+    <select id="model">
+      <option value="qwen-plus">qwen-plus（推荐）</option>
+      <option value="qwen-turbo">qwen-turbo（更快）</option>
+      <option value="qwen-max">qwen-max（更强）</option>
+    </select>
+    <p class="hint">Key 只保存在本机浏览器（localStorage），不会写入代码仓库、不会上传到任何我方服务器；请求由您的浏览器直接发往阿里云百炼。</p>
+    <div class="row">
+      <button id="run">生成安心牌信息</button>
+    </div>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="card" id="result" style="display:none">
+    <h2>3. 生成结果 <span class="tag ai">AI 结构化</span></h2>
+    <div id="fields"></div>
+
+    <div id="speechBox" style="display:none">
+      <div class="speech">
+        <p class="k">语音播报话术（可由设备朗读）</p>
+        <p class="v" id="speech"></p>
+      </div>
+      <div class="missing" id="missingBox" style="display:none"><b>建议补充</b><span id="missing"></span></div>
+    </div>
+
+    <div class="row">
+      <button class="ghost" id="copyAll">复制全部（按设备设置页顺序）</button>
+      <button class="ghost" id="shrink">让 AI 压缩超长字段</button>
+    </div>
+    <p class="hint">每个字段右侧的数字是该字段在设备设置页里的字符上限（中文按 1 字计）。超出会标红，写进设备前必须压到上限内。</p>
+  </div>
+
+  <div class="card">
+    <h2>隐私与边界</h2>
+    <p class="privacy">
+      <strong>这些内容会被陌生人看到。</strong>请勿填写身份证号、银行卡号、门锁密码等高风险信息——本工具会拒绝把这类内容结构化，并提示您删除。<br><br>
+      <strong>地址只精确到街道。</strong>家庭门牌只在您主动勾选"允许设备展示完整住址"时才会写入设备。<br><br>
+      <strong>本工具不是医疗器械</strong>，生成的健康提示仅为通俗表达，不能替代急救服务或专业照护。紧急情况请直接拨打 120。
+    </p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // 与 main/safety_portal.c 中的 maxlength 严格一致
+  var FIELDS = [
+    {k:"name",    label:"称呼或姓名", max:12, ph:"王爷爷"},
+    {k:"age",     label:"年龄",       max:8,  ph:"68"},
+    {k:"blood",   label:"血型",       max:8,  ph:"O型"},
+    {k:"help",    label:"求助说明",   max:36, ph:"您好，我可能迷路了，请帮我联系家人"},
+    {k:"area",    label:"居住区域",   max:22, ph:"上海市徐汇区田林街道"},
+    {k:"address", label:"完整家庭住址", max:48, ph:"留空则设备不展示"},
+    {k:"contact", label:"联系人",     max:12, ph:"王女士"},
+    {k:"relation",label:"与老人关系", max:8,  ph:"女儿"},
+    {k:"phone",   label:"联系电话",   max:24, ph:"138 0000 0000"},
+    {k:"backup",  label:"备用联系电话", max:24, ph:""},
+    {k:"wechat",  label:"微信联系说明", max:25, ph:"请添加我的家人，备注安心牌"},
+    {k:"medical", label:"健康提醒",   max:70, ph:"对青霉素过敏；高血压"}
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var KEY_STORE = "hic_family_assistant_key";
+  var lastResult = null;
+
+  $("key").value = localStorage.getItem(KEY_STORE) || "";
+
+  $("demo").onclick = function(){
+    $("raw").value = "我爸王建国，68岁，O型血，住在上海市徐汇区田林街道。他有高血压，每天早晚吃氨氯地平，对青霉素过敏。我电话 138 0000 1234，是我女儿；我姐王丽 139 0000 5678 是备用。真迷路了就跟人家说我可能迷路了想回家。";
+  };
+  $("clear").onclick = function(){
+    $("raw").value = ""; $("result").style.display = "none"; $("msg").className = "msg"; lastResult = null;
+  };
+
+  function setMsg(cls, text){
+    var m = $("msg");
+    m.className = "msg " + cls;
+    m.textContent = text;
+  }
+
+  function lengthOf(s){ return Array.from(s || "").length; }
+
+  function buildPrompt(raw){
+    var limits = FIELDS.map(function(f){ return f.k + "（≤" + f.max + " 字）" + f.label; }).join("\n");
+    return [
+      "你是「老人安心牌」的信息整理助手，负责把家属口述的信息整理成设备可直接显示的结构化字段。",
+      "",
+      "字段与字符上限（按 Unicode 字符计，中文每字计 1）：",
+      limits,
+      "speech（≤80 字）用于语音播报的求助话术，可提示「请联系家人」，但不要念出具体号码",
+      "plain（≤120 字）通俗版健康提示，给不具备医学背景的路人看",
+      "missing：字符串数组，列出原文缺失、建议家属补充的字段名",
+      "",
+      "硬性规则：",
+      "1. 不得编造原文没有的信息。姓名、年龄、血型、电话、地址等缺失就留空字符串，并写入 missing。",
+      "2. 住址只到街道级，不要推断或补全具体门牌号。",
+      "3. 如原文含身份证号、银行卡号、门锁密码等高风险信息，不要写入任何字段，改为在 missing 中注明「原文疑似含敏感号码，请删除」。",
+      "4. help 用第一人称，是老人对陌生路人说的话。",
+      "5. medical 压成短句，用分号分隔，只保留过敏、慢病、常用药、照护要点。",
+      "6. 每个字段必须严格不超过上限；宁可更短，不可超长。",
+      "7. 只输出 JSON 对象本身，不要 markdown 代码块，不要任何解释文字。",
+      "",
+      "JSON 键：" + FIELDS.map(function(f){return f.k;}).join(", ") + ", speech, plain, missing",
+      "",
+      "家属原始描述：",
+      raw
+    ].join("\n");
+  }
+
+  function extractJson(text){
+    var t = (text || "").trim();
+    t = t.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/,"").trim();
+    var s = t.indexOf("{"), e = t.lastIndexOf("}");
+    if (s >= 0 && e > s) t = t.slice(s, e + 1);
+    return JSON.parse(t);
+  }
+
+  async function callModel(raw, extra){
+    var key = ($("key").value || "").trim();
+    if (!key){ setMsg("err", "请先填入 DashScope API Key。"); throw new Error("NO_KEY"); }
+    if (!raw.trim()){ setMsg("err", "请先在第 1 步写下老人信息。"); throw new Error("NO_RAW"); }
+    localStorage.setItem(KEY_STORE, key);
+
+    var userContent = buildPrompt(raw);
+    if (extra) userContent += "\n\n" + extra;
+
+    setMsg("busy", "正在请求 " + $("model").value + " …");
+    $("run").disabled = true;
+
+    var ctrl = new AbortController();
+    var timer = setTimeout(function(){ ctrl.abort(); }, 60000);
+    var res, data;
+    try {
+      res = await fetch("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
+        signal: ctrl.signal,
+        body: JSON.stringify({
+          model: $("model").value,
+          temperature: 0.2,
+          messages: [
+            { role: "system", content: "你只输出严格合法的 JSON 对象，不加任何多余文字。" },
+            { role: "user", content: userContent }
+          ]
+        })
+      });
+      data = await res.json().catch(function(){ return null; });
+    } catch (err) {
+      clearTimeout(timer);
+      $("run").disabled = false;
+      if (err.name === "AbortError"){ setMsg("err", "请求超时（60 秒）。请检查网络后重试。"); }
+      else { setMsg("err", "网络请求失败：" + err.message + "\n若长期失败，可能是浏览器拦截了跨域请求，请更换浏览器（推荐 Chrome / Edge 最新版）。"); }
+      throw err;
+    }
+    clearTimeout(timer);
+    $("run").disabled = false;
+
+    if (!res.ok){
+      var detail = "";
+      if (data && data.error) detail = data.error.message || data.error.code || JSON.stringify(data.error);
+      else detail = "HTTP " + res.status;
+      if (res.status === 401) detail = "API Key 无效或已失效。";
+      if (res.status === 429) detail = "请求过于频繁或额度不足，请稍后再试。";
+      setMsg("err", "调用失败（" + res.status + "）：" + detail);
+      throw new Error("HTTP_" + res.status);
+    }
+
+    var content = data && data.choices && data.choices[0] && data.choices[0].message
+      ? data.choices[0].message.content : "";
+    if (!content){ setMsg("err", "模型没有返回内容，请重试。"); throw new Error("EMPTY"); }
+
+    var parsed;
+    try { parsed = extractJson(content); }
+    catch (e){
+      setMsg("err", "模型返回的不是合法 JSON，请重试一次。\n原始返回片段：\n" + content.slice(0, 300));
+      throw e;
+    }
+    return parsed;
+  }
+
+  function render(obj){
+    lastResult = obj;
+    var host = $("fields");
+    host.innerHTML = "";
+    var over = [];
+
+    FIELDS.forEach(function(f){
+      var val = obj[f.k] == null ? "" : String(obj[f.k]);
+      var n = lengthOf(val);
+      var isOver = n > f.max;
+      if (isOver) over.push(f.k);
+
+      var wrap = document.createElement("div");
+      wrap.className = "field" + (isOver ? " over" : "");
+      wrap.dataset.k = f.k;
+
+      var head = document.createElement("div");
+      head.className = "head";
+      var nm = document.createElement("span");
+      nm.className = "name";
+      nm.textContent = f.label;
+      var cnt = document.createElement("span");
+      cnt.className = "count";
+      cnt.textContent = n + " / " + f.max;
+      head.appendChild(nm); head.appendChild(cnt);
+
+      var inp;
+      var multi = (f.max >= 30);
+      if (multi){
+        inp = document.createElement("textarea");
+        inp.style.minHeight = "64px";
+      } else {
+        inp = document.createElement("input");
+      }
+      inp.value = val;
+      inp.maxLength = f.max;
+      inp.placeholder = f.ph || "";
+      inp.addEventListener("input", function(){
+        var m = lengthOf(inp.value);
+        cnt.textContent = m + " / " + f.max;
+        var bad = m > f.max;
+        wrap.classList.toggle("over", bad);
+        cnt.style.color = bad ? "" : "";
+      });
+
+      wrap.appendChild(head);
+      wrap.appendChild(inp);
+      host.appendChild(wrap);
+    });
+
+    $("speech").textContent = obj.speech || "（未生成）";
+    $("speechBox").style.display = "block";
+
+    var miss = Array.isArray(obj.missing) ? obj.missing.filter(Boolean) : [];
+    if (miss.length){
+      $("missingBox").style.display = "block";
+      $("missing").textContent = miss.join("；");
+    } else {
+      $("missingBox").style.display = "none";
+    }
+
+    $("result").style.display = "block";
+    if (over.length){
+      setMsg("err", "有 " + over.length + " 个字段超出设备上限：" + over.join("、") + "。请点「让 AI 压缩超长字段」，或手动删减后再写入设备。");
+    } else {
+      setMsg("ok", "已生成，所有字段都在设备字符上限内。请核对事实无误后，再填入设备设置页。");
+    }
+    $("result").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  $("run").onclick = async function(){
+    try {
+      var obj = await callModel($("raw").value, null);
+      render(obj);
+    } catch (e) { /* 错误已在 callModel 内提示 */ }
+  };
+
+  $("shrink").onclick = async function(){
+    if (!lastResult) return;
+    var bad = FIELDS.filter(function(f){ return lengthOf(lastResult[f.k]) > f.max; });
+    if (!bad.length){ setMsg("ok", "当前没有超长字段，无需压缩。"); return; }
+    var extra = "下面这些字段当前超长，请在保持事实不变的前提下压缩到上限内，其余字段原样返回：\n"
+      + bad.map(function(f){ return f.k + " 当前 " + lengthOf(lastResult[f.k]) + " 字，上限 " + f.max + " 字：\"\"\"" + lastResult[f.k] + "\"\"\""; }).join("\n")
+      + "\n仍然只输出完整 JSON。";
+    try {
+      var obj = await callModel($("raw").value, extra);
+      render(obj);
+    } catch (e) {}
+  };
+
+  $("copyAll").onclick = async function(){
+    if (!lastResult) return;
+    var lines = FIELDS.map(function(f){
+      return f.label + "：" + (lastResult[f.k] == null ? "" : lastResult[f.k]);
+    });
+    var text = lines.join("\n") + "\n\n语音播报话术：" + (lastResult.speech || "");
+    try {
+      await navigator.clipboard.writeText(text);
+      setMsg("ok", "已复制，可直接粘贴到设备设置页逐项核对。");
+    } catch (e) {
+      setMsg("err", "复制失败，请手动选中下方内容复制。");
+      window.prompt("请手动复制：", text);
+    }
+  };
+})();
+</script>
+</body>
+</html>
