@@ -67,15 +67,22 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
 
   <div class="card">
     <h2>2. 连接模型</h2>
-    <label for="key">DashScope API Key</label>
-    <input id="key" type="password" autocomplete="off" placeholder="sk-...">
-    <label for="model">模型</label>
-    <select id="model">
-      <option value="qwen-plus">qwen-plus（推荐）</option>
-      <option value="qwen-turbo">qwen-turbo（更快）</option>
-      <option value="qwen-max">qwen-max（更强）</option>
+    <label for="key">API Key</label>
+    <input id="key" type="password" autocomplete="off" placeholder="sk-... 或 ms-...">
+    <label for="baseUrl">接口地址</label>
+    <select id="baseUrl">
+      <option value="https://dashscope.aliyuncs.com/compatible-mode/v1">阿里云百炼 DashScope</option>
+      <option value="https://api-inference.modelscope.cn/v1">魔搭 ModelScope 推理服务</option>
     </select>
-    <p class="hint">Key 只保存在本机浏览器（localStorage），不会写入代码仓库、不会上传到任何我方服务器；请求由您的浏览器直接发往阿里云百炼。</p>
+    <label for="model">模型</label>
+    <input id="model" list="modelList" value="qwen-plus" placeholder="qwen-plus" autocomplete="off">
+    <datalist id="modelList">
+      <option value="qwen-plus"></option>
+      <option value="qwen-turbo"></option>
+      <option value="qwen-max"></option>
+      <option value="Qwen/Qwen3.8-Flash-Next"></option>
+    </datalist>
+    <p class="hint">Key 只保存在本机浏览器（localStorage），不会写入代码仓库、不会上传到任何我方服务器；请求由您的浏览器直接发往所选接口。两处接口均走 OpenAI 兼容协议。</p>
     <div class="row">
       <button id="run">生成安心牌信息</button>
     </div>
@@ -175,7 +182,10 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
       "5. medical 压成短句，用分号分隔，只保留过敏、慢病、常用药、照护要点。",
       "6. 每个字段必须严格不超过上限；宁可更短，不可超长。",
       "7. 【字形约束】设备字库只有 ASCII(0x20-0x7E) 与 GB2312 一级汉字。严禁使用任何全角标点或全角符号（，。；：！？、（）【】「」《》…—·～以及全角引号），一律改用半角 , . ; : ! ? / - 与空格；也不要用 emoji。违反此条会在设备上显示为问号。",
-      "8. 只输出 JSON 对象本身，不要 markdown 代码块，不要任何解释文字。",
+      "8. age 只填数字（如 68），不要带「岁」；blood 只填血型代号（如 A型、O型、AB型），不要带「血」字。",
+      "9. address 仅当原文明确给出门牌号、小区或楼栋时才填；若只有街道级信息，address 必须留空，并把 address 写入 missing。",
+      "10. contact 填联系人姓名；原文只给关系未给姓名时，填关系称谓，并在 missing 中注明缺联系人姓名。",
+      "11. 只输出 JSON 对象本身，不要 markdown 代码块，不要任何解释文字。",
       "",
       "JSON 键：" + FIELDS.map(function(f){return f.k;}).join(", ") + ", speech, plain, missing",
       "",
@@ -194,27 +204,31 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
 
   async function callModel(raw, extra){
     var key = ($("key").value || "").trim();
-    if (!key){ setMsg("err", "请先填入 DashScope API Key。"); throw new Error("NO_KEY"); }
+    if (!key){ setMsg("err", "请先填入 API Key。"); throw new Error("NO_KEY"); }
     if (!raw.trim()){ setMsg("err", "请先在第 1 步写下老人信息。"); throw new Error("NO_RAW"); }
     localStorage.setItem(KEY_STORE, key);
 
     var userContent = buildPrompt(raw);
     if (extra) userContent += "\n\n" + extra;
 
-    setMsg("busy", "正在请求 " + $("model").value + " …");
+    var baseUrl = ($("baseUrl").value || "").trim().replace(/\/+$/, "");
+    var modelName = ($("model").value || "").trim() || "qwen-plus";
+    setMsg("busy", "正在请求 " + modelName + " …");
     $("run").disabled = true;
 
     var ctrl = new AbortController();
-    var timer = setTimeout(function(){ ctrl.abort(); }, 60000);
+    var timer = setTimeout(function(){ ctrl.abort(); }, 150000);
     var res, data;
     try {
-      res = await fetch("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", {
+      res = await fetch(baseUrl + "/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
         signal: ctrl.signal,
         body: JSON.stringify({
-          model: $("model").value,
+          model: modelName,
           temperature: 0.2,
+          stream: false,
+          max_tokens: 1200,
           messages: [
             { role: "system", content: "你只输出严格合法的 JSON 对象，不加任何多余文字。" },
             { role: "user", content: userContent }
@@ -225,7 +239,7 @@ kbd{background:#eef2f5;border:1px solid var(--line);border-radius:4px;padding:1p
     } catch (err) {
       clearTimeout(timer);
       $("run").disabled = false;
-      if (err.name === "AbortError"){ setMsg("err", "请求超时（60 秒）。请检查网络后重试。"); }
+      if (err.name === "AbortError"){ setMsg("err", "请求超时（150 秒）。带推理的模型在长提示词下可能较慢，请重试一次。"); }
       else { setMsg("err", "网络请求失败：" + err.message + "\n若长期失败，可能是浏览器拦截了跨域请求，请更换浏览器（推荐 Chrome / Edge 最新版）。"); }
       throw err;
     }
