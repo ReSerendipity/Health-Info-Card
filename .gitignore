@@ -27,3 +27,4 @@ __pycache__/
 # 公开仓 §7 家族文件不入库（§12.2 结构收敛）
 /local/
 AGENTS.md
+!/AGENTS.md
