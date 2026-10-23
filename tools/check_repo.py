@@ -22,6 +22,10 @@ SECRET_PATTERNS = {
 ROOT_MARKDOWN_ALLOWLIST = {
     "README.md",
     "README.zh_CN.md",
+    # 根 CHANGELOG 为指向 docs/CHANGELOG 的指针文件（治理审计要求 release 仓
+    # 根目录存在 CHANGELOG.md），权威内容仍在 docs/。
+    "CHANGELOG.md",
+    "CHANGELOG.zh_CN.md",
 }
 
 
