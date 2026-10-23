@@ -11,7 +11,7 @@
 
 | 文档 | 作用 | 本文档的取舍 |
 | --- | --- | --- |
-| [AGENTS.md](../../local/AGENTS.md) | AI 规范入口 + 按触发场景的规则索引 | 必读；本文档不重复规则 |
+| `local/AGENTS.md`（本地文件，不入库） | AI 规范入口 + 按触发场景的规则索引 | 必读；本文档不重复规则 |
 | [AI 硬件开发指南](../hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md) | 硬件事实、引脚表、验收矩阵、故障速查 | 仅硬件相关任务必读；涉及硬件结论时以其为准 |
 | [build-and-test.md](build-and-test.md) | 构建与验证命令 | 本文档不重复命令，只引用 |
 | [docs/README.md](../README.md) | 人读的项目总览 | 已不含 AI 说明 |

@@ -9,7 +9,7 @@ The repository is organized around the following principles:
 - `main` is the smallest complete runnable baseline and an executable description of the current hardware capabilities.
 - `components/bsp` isolates board-level details and exposes stable APIs to applications.
 - `demo/*` branches show different paths from a product requirement to a working implementation.
-- Development conventions for AI assistants live in [`local/AGENTS.md`](../local/AGENTS.md) and [`docs/development/agent-guide.md`](development/agent-guide.md); the complete hardware context and troubleshooting knowledge is in [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md).
+- Development conventions for AI assistants live in [`docs/development/agent-guide.md`](development/agent-guide.md); the complete hardware context and troubleshooting knowledge is in [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md).
 - Build results and physical-device results are reported separately. A successful build must never be presented as successful hardware validation.
 
 ## Hardware capability contract
@@ -116,7 +116,7 @@ LICENSE                  Repository license
 - [`docs/INDEX.md`](INDEX.md) — complete documentation index for contribution, engineering, fork, software, and hardware topics.
 - [`docs/development/agent-guide.md`](development/agent-guide.md) — AI-assisted development workflow, source priorities, BSP boundaries, runtime rules, and delivery format.
 - [`docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md`](hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md) — pin map, acceptance matrix, and troubleshooting guide.
-- [`local/AGENTS.md`](../local/AGENTS.md) — mandatory entry point for AI-assisted work.
+- `local/AGENTS.md` (local-only, not tracked) — mandatory entry point for AI-assisted work.
 - [`docs/fork-guide.md`](fork-guide.md) — fork branch and documentation workflow.
 
 > This README describes the product and repository. AI agents must begin with `local/AGENTS.md` and follow its task-specific routing.

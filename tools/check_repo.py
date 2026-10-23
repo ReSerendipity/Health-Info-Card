@@ -51,10 +51,8 @@ def text_files() -> list[Path]:
 
 def check_required_files(errors: list[str]) -> None:
     required = (
-        "local/AGENTS.md",
-        "local/AGENTS.zh_CN.md",
-        "local/CLAUDE.md",
-        "local/CLAUDE.zh_CN.md",
+        # local/AGENTS.md 与 local/CLAUDE.md 为不入库的本地文件（见治理 §7），
+        # 不参与 CI 检出校验。
         "docs/CHANGELOG.md",
         ".github/CONTRIBUTING.md",
         ".github/CODE_OF_CONDUCT.md",
@@ -103,6 +101,10 @@ def check_document_languages(files: list[Path], errors: list[str]) -> None:
 
     for path in sorted(markdown):
         name = path.name
+        if path == (ROOT / "docs" / "agent-contract.md").resolve():
+            # 治理下发的契约副本必须与上游模板逐字节一致（模板为中文），
+            # 不受本仓英文默认与双语配对规则约束。
+            continue
         text = path.read_text(encoding="utf-8")
         opening = "\n".join(text.splitlines()[:8])
 

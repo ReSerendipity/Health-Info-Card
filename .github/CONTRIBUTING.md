@@ -12,8 +12,9 @@ second development; the fork conventions are in
 
 ## Before you start
 
-- Read [`AGENTS.md`](../local/AGENTS.md): it is the authoritative entry and index for the
-  rules an AI agent should follow. It is not a replacement for this guide.
+- Read [`agent-guide.md`](../docs/development/agent-guide.md): it is the authoritative
+  tracked entry and index for the rules an AI agent should follow. It is not a
+  replacement for this guide.
 - Read [`README.md`](../docs/README.md) for the hardware capability contract,
   and the [AI Hardware Development Guide](../docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md)
   for the complete hardware context.

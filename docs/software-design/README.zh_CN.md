@@ -20,6 +20,6 @@
 
 ## 现有文档索引
 
-- [AGENTS.md](../../local/AGENTS.md)：仓库权威 AI 规范的入口与索引。
+- [agent-guide.zh_CN.md](../development/agent-guide.zh_CN.md)：仓库权威 AI 规范的可跟踪入口与索引（本地 `local/AGENTS.md` 不入库，为其本地补充）。
 
 > 注：`docs/software-design` 用于容纳软件设计文档。协作规范见 `docs/contribution/`，工程规范和 CI 说明见 `docs/development/`，fork 工作流见 `docs/fork-guide.md`；这些入口均由 `local/AGENTS.md` 索引。

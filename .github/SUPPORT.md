@@ -15,7 +15,7 @@ guaranteed.
   [`README.md`](../docs/README.md) and the
   [AI Hardware Development Guide](../docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md).
 - AI agent workflow and engineering rules: read
-  [`AGENTS.md`](../local/AGENTS.md) and its rule index.
+  [`agent-guide.md`](../docs/development/agent-guide.md) and its rule index.
 - Security vulnerabilities, credentials, or exploitable details: follow
   [`SECURITY.md`](SECURITY.md) and report privately.
 - Ordinary bugs: open a GitHub issue with the board revision, firmware version,
