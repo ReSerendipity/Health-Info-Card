@@ -22,7 +22,7 @@ directory structure.
 
 ![Repository architecture](docs/assets/architecture.svg)
 
-*Figure: repository layout（图注：基于仓库目录结构绘制）.*
+*Figure: repository layout (drawn from the actual repository directory structure).*
 
 ## How it works
 
