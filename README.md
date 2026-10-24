@@ -4,11 +4,25 @@
 
 # AI Passport Senior Safety Card
 
+[![CI](https://github.com/ReSerendipity/Health-Info-Card/actions/workflows/ci.yml/badge.svg)](https://github.com/ReSerendipity/Health-Info-Card/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/ReSerendipity/Health-Info-Card)](LICENSE)
+[![Release](https://img.shields.io/github/v/tag/ReSerendipity/Health-Info-Card)](https://github.com/ReSerendipity/Health-Info-Card/releases/tag/v1.0.0)
+
 Senior Safety Card turns FoloToy AI Passport into an offline, wearable help
 card for an older adult who may become lost or need assistance. It can show the
 wearer's name and help message, family contacts, approximate home area, health
 notes, and up to four WeChat QR codes (family, backup, community doctor, or
 other contacts).
+
+## Repository overview
+
+This is an ESP-IDF 5.5.3 firmware project for the ESP32-C3; there is no desktop
+UI to capture, so the figure below is drawn from the actual repository
+directory structure.
+
+![Repository architecture](docs/assets/architecture.svg)
+
+*Figure: repository layout (drawn from the actual repository directory structure).*
 
 ## How it works
 

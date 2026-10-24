@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" font-family="Arial, Helvetica, sans-serif">
+  <title>Health-Info-Card repository architecture</title>
+  <desc>Repository layout of ReSerendipity/Health-Info-Card (AI Passport Senior Safety Card), drawn from the actual directory structure.</desc>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1600" height="1000" fill="#ffffff"/>
+
+  <!-- Header -->
+  <text x="40" y="48" font-size="26" font-weight="bold" fill="#1f2328">Health-Info-Card · AI Passport Senior Safety Card — Repository Architecture</text>
+  <text x="40" y="74" font-size="15" fill="#57606a">图注：基于仓库目录结构绘制 · Drawn from the actual repository directory structure · ESP-IDF 5.5.3 / ESP32-C3 · MIT License</text>
+
+  <!-- ============ Firmware group ============ -->
+  <rect x="40" y="110" width="740" height="430" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="60" y="138" font-size="16" font-weight="bold" fill="#0969da">FIRMWARE — runs on the ESP32-C3 device</text>
+
+  <!-- bootloader -->
+  <rect x="60" y="152" width="700" height="58" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="176" font-size="14" font-weight="bold" fill="#24292f">bootloader_components/recovery_boot_hook/</text>
+  <text x="76" y="196" font-size="13" fill="#57606a">recovery_boot_hook.c — boot-time Recovery entry (hold UP for 5 s to enter Recovery)</text>
+
+  <!-- main -->
+  <rect x="60" y="222" width="700" height="176" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="246" font-size="14" font-weight="bold" fill="#24292f">main/ — application (sources per main/CMakeLists.txt)</text>
+  <text x="76" y="270" font-size="13" fill="#24292f">main.c · ui_safety.c (pages, full-screen QR) · safety_portal.c (local setup portal)</text>
+  <text x="76" y="290" font-size="13" fill="#24292f">safety_profile.c / safety_store.c (profile in NVS; PIN = salt + SHA-256 digest)</text>
+  <text x="76" y="310" font-size="13" fill="#24292f">jpeg_store.c / jpeg_view.c (WeChat QR images → imgstore) · fap_screenshot.c</text>
+  <text x="76" y="330" font-size="13" fill="#24292f">ui_pixel.c / ui_pixel_math.c (display) · pin_throttle.c · lv_font_cn_16.c</text>
+  <text x="76" y="350" font-size="13" fill="#24292f">demo_ble.c · demo_wifi.c · demo_display.c · demo_battery.c · demo_low_power.c · demo_radio.c</text>
+  <text x="76" y="376" font-size="12" fill="#57606a">REQUIRES: bsp · esp_wifi · esp_http_server · lvgl · esp_new_jpeg · mbedtls · nvs_flash</text>
+
+  <!-- bsp -->
+  <rect x="60" y="410" width="700" height="56" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="434" font-size="14" font-weight="bold" fill="#24292f">components/bsp/ — board support package (include/ · src/)</text>
+  <text x="76" y="454" font-size="13" fill="#57606a">component: bsp (idf_component.yml)</text>
+
+  <!-- root build config -->
+  <rect x="60" y="478" width="700" height="48" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="507" font-size="13" fill="#24292f">Root build config: CMakeLists.txt · sdkconfig.defaults · partitions.csv · dependencies.lock</text>
+
+  <!-- ============ On-device partitions band ============ -->
+  <rect x="40" y="556" width="1520" height="72" rx="10" fill="#fff8c5" stroke="#d4a72c" stroke-width="1.5"/>
+  <text x="60" y="580" font-size="14" font-weight="bold" fill="#735f0d">On-device storage — partitions.csv</text>
+  <text x="60" y="602" font-size="13" fill="#4d4330">nvs @0x9000 (profile) · factory app @0x10000 (3 MB) · imgstore @0x310000 (WeChat QR images) · imgframe @0x330000 · cardid @0x356000 (protected) · recovery @0x700000 (permanent)</text>
+
+  <!-- ============ CI/CD & validation group ============ -->
+  <rect x="820" y="110" width="740" height="430" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="840" y="138" font-size="16" font-weight="bold" fill="#1a7f37">CI / CD &amp; VALIDATION — .github/workflows</text>
+
+  <rect x="840" y="152" width="700" height="196" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="856" y="178" font-size="13" font-weight="bold" fill="#24292f">ci.yml — “Pull request checks”</text>
+  <text x="856" y="197" font-size="12.5" fill="#57606a">on: pull_request · push (main, health-info-official) · workflow_dispatch</text>
+  <text x="856" y="215" font-size="12.5" fill="#57606a">static: tools/validate.sh --static + actionlint · firmware: ESP-IDF 5.5.3 build</text>
+  <line x1="856" y1="228" x2="1540" y2="228" stroke="#eaeef2"/>
+  <text x="856" y="248" font-size="13" font-weight="bold" fill="#24292f">build-firmware.yml — “Build firmware”</text>
+  <text x="856" y="267" font-size="12.5" fill="#57606a">on: push tags → firmware build artifact (FoloToy-AI-Passport-full.bin)</text>
+  <line x1="856" y1="280" x2="1540" y2="280" stroke="#eaeef2"/>
+  <text x="856" y="300" font-size="13" font-weight="bold" fill="#24292f">deploy-pages.yml — “Deploy documentation to GitHub Pages”</text>
+  <text x="856" y="319" font-size="12.5" fill="#57606a">on: push main → docs site</text>
+  <line x1="856" y1="332" x2="1540" y2="332" stroke="#eaeef2"/>
+  <text x="856" y="352" font-size="13" font-weight="bold" fill="#24292f">sync-main.yml — “Upstream Sync”</text>
+  <text x="856" y="371" font-size="12.5" fill="#57606a">on: daily schedule + workflow_dispatch (fork only)</text>
+
+  <!-- tools/tests -->
+  <rect x="840" y="362" width="700" height="164" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="856" y="386" font-size="13" font-weight="bold" fill="#24292f">tools/ — repo &amp; firmware validation</text>
+  <text x="856" y="406" font-size="12.5" fill="#57606a">validate.sh (--all | --static | --firmware) · check_repo.py · verify_firmware.py</text>
+  <text x="856" y="424" font-size="12.5" fill="#57606a">fap_verify.py · fap_verify2.py · fap_device.py · gen_safety_font.py · install-actionlint.sh</text>
+  <text x="856" y="450" font-size="13" font-weight="bold" fill="#24292f">tests/ — host-side tests</text>
+  <text x="856" y="470" font-size="12.5" fill="#57606a">test_safety_profile.c · test_pin_throttle.c · test_ui_pixel_math.c</text>
+  <text x="856" y="488" font-size="12.5" fill="#57606a">test_safety_contract.py · test_verify_firmware.py</text>
+  <line x1="856" y1="500" x2="1540" y2="500" stroke="#eaeef2"/>
+  <text x="856" y="518" font-size="12" fill="#57606a">flow: ci.yml → tools/validate.sh (static) + ESP-IDF 5.5.3 firmware build</text>
+
+  <!-- ============ Docs & content group ============ -->
+  <rect x="40" y="648" width="1520" height="312" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="60" y="676" font-size="16" font-weight="bold" fill="#6e7781">DOCS, LICENSING &amp; CONTENT</text>
+
+  <rect x="60" y="690" width="620" height="250" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="714" font-size="13" font-weight="bold" fill="#24292f">docs/ — bilingual documentation</text>
+  <text x="76" y="734" font-size="12.5" fill="#57606a">INDEX.md · health-info-card-guide · brand-and-product</text>
+  <text x="76" y="752" font-size="12.5" fill="#57606a">hardware-design/ (specifications, AI hardware guide)</text>
+  <text x="76" y="770" font-size="12.5" fill="#57606a">software-design/ · development/ (build-and-test, CI-*)</text>
+  <text x="76" y="788" font-size="12.5" fill="#57606a">contribution/ (commit-and-pr, doc-conventions)</text>
+  <text x="76" y="806" font-size="12.5" fill="#57606a">experiences/ · assets/ (brand) · _config.yml (GitHub Pages)</text>
+  <text x="76" y="824" font-size="12.5" fill="#57606a">fork-guide · release-governance · agent-contract · family-assistant.html</text>
+
+  <rect x="700" y="690" width="400" height="250" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="716" y="714" font-size="13" font-weight="bold" fill="#24292f">Meta &amp; licensing</text>
+  <text x="716" y="734" font-size="12.5" fill="#57606a">README.md · README.zh_CN.md (bilingual entry)</text>
+  <text x="716" y="752" font-size="12.5" fill="#57606a">CHANGELOG.md · CHANGELOG.zh_CN.md</text>
+  <text x="716" y="770" font-size="12.5" fill="#57606a">LICENSE (MIT, © 2026 FoloToy)</text>
+  <text x="716" y="796" font-size="13" font-weight="bold" fill="#24292f">.github/ — community &amp; governance</text>
+  <text x="716" y="816" font-size="12.5" fill="#57606a">issue &amp; PR templates · SECURITY · CODE_OF_CONDUCT</text>
+  <text x="716" y="834" font-size="12.5" fill="#57606a">SUPPORT · CONTRIBUTING · dependabot.yml</text>
+
+  <rect x="1120" y="690" width="420" height="250" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="1136" y="714" font-size="13" font-weight="bold" fill="#24292f">Assets &amp; content</text>
+  <text x="1136" y="734" font-size="12.5" fill="#57606a">assets/ (fonts/ · images/ · music/)</text>
+  <text x="1136" y="752" font-size="12.5" fill="#57606a">  incl. images/senior-safety-card-cover.png</text>
+  <text x="1136" y="772" font-size="12.5" fill="#57606a">plays/ (shinku-chen/voice-keychain)</text>
+  <text x="1136" y="790" font-size="12.5" fill="#57606a">skills/ (experience-pr · issue-suggestions · plays-archive)</text>
+  <text x="1136" y="812" font-size="12.5" fill="#57606a">docs/assets/brand/ (product renders)</text>
+
+  <!-- Footer caption -->
+  <text x="40" y="988" font-size="13" fill="#57606a">图注：基于仓库目录结构绘制 · All nodes correspond to directories/files present in the repository (main @ bed0d5f).</text>
+</svg>
