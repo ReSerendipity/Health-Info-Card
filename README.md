@@ -44,23 +44,23 @@ All data is stored on the device itself (NVS and the `imgstore` partition) and n
 
 The safety-card main screen (built-in sample profile with the red "sample data" banner):
 
-![Safety card main screen](assets/images/senior-safety-card-cover.png)
+![Safety card main screen](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/assets/images/senior-safety-card-cover.png)
 
 Device front (wearable card form factor):
 
-![Device front](docs/assets/brand/ai-passport-front.png)
+![Device front](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/brand/ai-passport-front.png)
 
 Device multi-angle views:
 
-![Device views](docs/assets/brand/ai-passport-views.jpg)
+![Device views](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/brand/ai-passport-views.jpg)
 
 Device and data-flow architecture (hardware, Flash partitions, local setup portal, privacy boundary):
 
-![Device and data-flow architecture](docs/assets/readme-health-info-card-architecture.svg)
+![Device and data-flow architecture](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-architecture.svg)
 
 Setup and daily-use flow (first boot → local setup → offline display → maintenance and verification):
 
-![Setup and daily-use flow](docs/assets/readme-health-info-card-flow.svg)
+![Setup and daily-use flow](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-flow.svg)
 
 ## Quick start
 
