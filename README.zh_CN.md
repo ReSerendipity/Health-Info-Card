@@ -44,23 +44,23 @@ Senior Safety Card（健康信息卡）是基于 FoloToy AI Passport（ESP32-C3 
 
 设备屏幕上的安心卡主界面（内置示例资料，带红色"示例数据"横幅）：
 
-![安心卡主界面](assets/images/senior-safety-card-cover.png)
+![安心卡主界面](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/assets/images/senior-safety-card-cover.png)
 
 设备正面（可穿戴卡片形态）：
 
-![设备正面](docs/assets/brand/ai-passport-front.png)
+![设备正面](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/brand/ai-passport-front.png)
 
 设备多角度视图：
 
-![设备多视图](docs/assets/brand/ai-passport-views.jpg)
+![设备多视图](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/brand/ai-passport-views.jpg)
 
 设备与数据流架构（硬件、Flash 分区、本地设置 portal、隐私边界）：
 
-![设备与数据流架构](docs/assets/readme-health-info-card-architecture.svg)
+![设备与数据流架构](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-architecture.svg)
 
 卡片生成与日常使用流程（首次开机 → 本地设置 → 离线展示 → 维护与验收）：
 
-![卡片生成与使用流程](docs/assets/readme-health-info-card-flow.svg)
+![卡片生成与使用流程](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-flow.svg)
 
 ## 快速开始
 
