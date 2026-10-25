@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="860" viewBox="0 0 1600 860" font-family="Arial, Helvetica, sans-serif">
+  <title>Health-Info-Card generation and daily-use flow</title>
+  <desc>AI Passport Senior Safety Card: first-boot to setup-portal to offline display, plus deep sleep and PIN-protected reconfiguration.</desc>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1600" height="860" fill="#ffffff"/>
+
+  <!-- Header -->
+  <text x="40" y="46" font-size="26" font-weight="bold" fill="#1f2328">AI Passport Senior Safety Card — Setup &amp; Daily-Use Flow</text>
+  <text x="40" y="72" font-size="15" fill="#57606a">图注：卡片生成与日常使用流程（基于仓库实际行为绘制）· Drawn from the actual device behavior · ESP-IDF 5.5.3 / ESP32-C3</text>
+
+  <defs>
+    <marker id="arrowb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0969da"/>
+    </marker>
+  </defs>
+
+  <!-- ============ Phase A: first boot ============ -->
+  <rect x="40" y="110" width="360" height="470" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="60" y="138" font-size="15" font-weight="bold" fill="#0969da">A · FIRST BOOT</text>
+
+  <rect x="60" y="150" width="320" height="66" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="172" font-size="12.5" font-weight="bold" fill="#24292f">Flash full firmware (0x0)</text>
+  <text x="76" y="192" font-size="12" fill="#57606a">FoloToy-AI-Passport-full.bin via mini-program Recovery or esptool</text>
+
+  <text x="220" y="240" font-size="18" fill="#0969da">↓</text>
+
+  <rect x="60" y="254" width="320" height="120" rx="6" fill="#fff8c5" stroke="#9a6700"/>
+  <text x="76" y="276" font-size="12.5" font-weight="bold" fill="#9a6700">Placeholder profile shown (demo flag)</text>
+  <text x="76" y="298" font-size="12" fill="#24292f">Sample data is baked in (name / age / blood type /</text>
+  <text x="76" y="316" font-size="12" fill="#24292f">contacts / address / medical notes) so the card is</text>
+  <text x="76" y="334" font-size="12" fill="#24292f">readable right after flashing</text>
+  <text x="76" y="354" font-size="12" fill="#cf222e">Red “sample data” banner on every page until a</text>
+  <text x="76" y="370" font-size="12" fill="#cf222e">real profile is saved</text>
+
+  <text x="220" y="400" font-size="18" fill="#0969da">↓</text>
+
+  <rect x="60" y="414" width="320" height="140" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="436" font-size="12.5" font-weight="bold" fill="#24292f">Screen shows Wi-Fi QR + hotspot name</text>
+  <text x="76" y="458" font-size="12" fill="#24292f">Hint: “WiFi scan to join hotspot / open</text>
+  <text x="76" y="476" font-size="12" fill="#24292f">192.168.4.1 in browser / password valid once,</text>
+  <text x="76" y="494" font-size="12" fill="#24292f">avoid photos”</text>
+  <text x="76" y="516" font-size="12" fill="#57606a">Bluetooth stays off during normal use; the</text>
+  <text x="76" y="534" font-size="12" fill="#57606a">hotspot sleeps after 5 minutes without input</text>
+
+  <!-- arrow A -> B -->
+  <line x1="400" y1="300" x2="452" y2="300" stroke="#0969da" stroke-width="2.5" marker-end="url(#arrowb)"/>
+
+  <!-- ============ Phase B: setup ============ -->
+  <rect x="470" y="110" width="360" height="470" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="490" y="138" font-size="15" font-weight="bold" fill="#0969da">B · LOCAL SETUP (portal)</text>
+
+  <rect x="490" y="150" width="320" height="60" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="506" y="172" font-size="12.5" font-weight="bold" fill="#24292f">Phone joins the password-protected</text>
+  <text x="506" y="192" font-size="12.5" fill="#24292f">hotspot and opens http://192.168.4.1</text>
+
+  <text x="650" y="234" font-size="18" fill="#0969da">↓</text>
+
+  <rect x="490" y="248" width="320" height="170" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="506" y="270" font-size="12.5" font-weight="bold" fill="#24292f">Fill in the safety profile (validated)</text>
+  <text x="506" y="292" font-size="12" fill="#24292f">Name · age (1–150) · blood type (A/B/AB/O ±)</text>
+  <text x="506" y="312" font-size="12" fill="#24292f">Family + primary/backup phones (7–15 digits)</text>
+  <text x="506" y="332" font-size="12" fill="#24292f">Home address (full display opt-in)</text>
+  <text x="506" y="352" font-size="12" fill="#24292f">Health notes: allergies, chronic conditions,</text>
+  <text x="506" y="372" font-size="12" fill="#24292f">daily medication</text>
+  <text x="506" y="396" font-size="12" fill="#24292f">+ up to 4 WeChat QR uploads (28 KB max each,</text>
+  <text x="506" y="412" font-size="12" fill="#24292f">240×240 JPEG; family/backup/doctor/other)</text>
+
+  <text x="650" y="442" font-size="18" fill="#0969da">↓</text>
+
+  <rect x="490" y="456" width="320" height="98" rx="6" fill="#e6ffed" stroke="#1a7f37"/>
+  <text x="506" y="478" font-size="12.5" font-weight="bold" fill="#1a7f37">Save → profile sealed</text>
+  <text x="506" y="500" font-size="12" fill="#24292f">Profile → NVS · QR JPEGs → imgstore (4 slots)</text>
+  <text x="506" y="520" font-size="12" fill="#24292f">demo flag cleared → red banner disappears</text>
+  <text x="506" y="540" font-size="12" fill="#24292f">Wi-Fi and portal shut down immediately</text>
+
+  <!-- arrow B -> C -->
+  <line x1="830" y1="300" x2="882" y2="300" stroke="#0969da" stroke-width="2.5" marker-end="url(#arrowb)"/>
+
+  <!-- ============ Phase C: daily display ============ -->
+  <rect x="900" y="110" width="320" height="470" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="920" y="138" font-size="15" font-weight="bold" fill="#0969da">C · DAILY DISPLAY (offline)</text>
+
+  <rect x="920" y="150" width="280" height="190" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="936" y="172" font-size="12.5" font-weight="bold" fill="#24292f">5 pages, UP / DOWN to switch</text>
+  <text x="936" y="194" font-size="12" fill="#24292f">1/5 · Name, age, blood type, help request</text>
+  <text x="936" y="214" font-size="12" fill="#24292f">2/5 · Family contact (masked by default)</text>
+  <text x="936" y="234" font-size="12" fill="#24292f">3/5 · Take me home (address)</text>
+  <text x="936" y="254" font-size="12" fill="#24292f">4/5 · Health reminders</text>
+  <text x="936" y="274" font-size="12" fill="#24292f">5/5 · WeChat QR (4+N slots)</text>
+  <text x="936" y="298" font-size="12" fill="#24292f">OK on a QR page → full screen; any key returns</text>
+  <text x="936" y="318" font-size="12" fill="#24292f">Anyone can read the card without an app</text>
+
+  <text x="1060" y="364" font-size="18" fill="#0969da">↓</text>
+
+  <rect x="920" y="378" width="280" height="86" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="936" y="400" font-size="12.5" font-weight="bold" fill="#24292f">Low power</text>
+  <text x="936" y="422" font-size="12" fill="#24292f">60 s without input → deep sleep (screen off)</text>
+  <text x="936" y="442" font-size="12" fill="#24292f">Any function key wakes; returns to previous</text>
+  <text x="936" y="458" font-size="12" fill="#24292f">page via RTC memory</text>
+
+  <!-- arrow C -> B (reconfiguration loop) -->
+  <path d="M 1220 500 L 1220 604 L 650 604 L 650 570" fill="none" stroke="#0969da" stroke-width="2.5" marker-end="url(#arrowb)"/>
+  <text x="700" y="596" font-size="12.5" font-weight="bold" fill="#0969da">long-press OK → re-open setup (PIN required)</text>
+
+  <!-- ============ Phase D: maintenance / verification ============ -->
+  <rect x="40" y="620" width="1520" height="150" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="60" y="648" font-size="15" font-weight="bold" fill="#0969da">D · MAINTENANCE &amp; VERIFICATION</text>
+
+  <rect x="60" y="662" width="470" height="88" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="684" font-size="12.5" font-weight="bold" fill="#24292f">PIN-protected reconfiguration</text>
+  <text x="76" y="706" font-size="12" fill="#24292f">Long-press OK opens the portal; a configured PIN is required.</text>
+  <text x="76" y="726" font-size="12" fill="#24292f">PIN = random salt + SHA-256 digest; 5 failures lock for 60 s.</text>
+
+  <rect x="560" y="662" width="470" height="88" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="576" y="684" font-size="12.5" font-weight="bold" fill="#24292f">Automatic on-device acceptance (FAP)</text>
+  <text x="576" y="706" font-size="12" fill="#24292f">USB-Serial-JTAG screenshot + key injection (FAP_SCREENSHOT_V1 / FAP_KEY_V1)</text>
+  <text x="576" y="726" font-size="12" fill="#24292f">tools/fap_verify.py captures all 5 pages automatically</text>
+
+  <rect x="1060" y="662" width="480" height="88" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="1076" y="684" font-size="12.5" font-weight="bold" fill="#24292f">Recovery &amp; upgrades</text>
+  <text x="1076" y="706" font-size="12" fill="#24292f">Hold UP for 5 s at boot → permanent Recovery (0x700000)</text>
+  <text x="1076" y="726" font-size="12" fill="#24292f">Never erase-flash — it destroys device identity and Recovery</text>
+
+  <!-- Footer -->
+  <rect x="40" y="790" width="1520" height="44" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="60" y="818" font-size="13" fill="#24292f">Release artifact: build/FoloToy-AI-Passport-full.bin · MIT License · Based on FoloToy/ai-passport (daily upstream sync)</text>
+</svg>

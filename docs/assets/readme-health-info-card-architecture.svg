@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" font-family="Arial, Helvetica, sans-serif">
+  <title>Health-Info-Card device and data-flow architecture</title>
+  <desc>AI Passport Senior Safety Card (Health-Info-Card): ESP32-C3 firmware architecture, on-device storage partitions, and the local Wi-Fi setup data flow.</desc>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1600" height="1000" fill="#ffffff"/>
+
+  <!-- Header -->
+  <text x="40" y="46" font-size="26" font-weight="bold" fill="#1f2328">AI Passport Senior Safety Card — Device &amp; Data-Flow Architecture</text>
+  <text x="40" y="72" font-size="15" fill="#57606a">图注：设备与数据流架构（基于仓库实际实现绘制）· Drawn from the actual firmware implementation · ESP-IDF 5.5.3 / ESP32-C3 / 240×320 ST7789</text>
+
+  <!-- ================= Device (left) ================= -->
+  <rect x="40" y="100" width="640" height="560" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="60" y="128" font-size="16" font-weight="bold" fill="#0969da">DEVICE — wearable card (ESP32-C3)</text>
+
+  <!-- Hardware row -->
+  <rect x="60" y="144" width="600" height="120" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="166" font-size="13" font-weight="bold" fill="#24292f">Hardware (components/bsp)</text>
+  <text x="76" y="188" font-size="12.5" fill="#24292f">Display: ST7789 240×320 portrait RGB565 (SPI2 40 MHz, no PSRAM)</text>
+  <text x="76" y="208" font-size="12.5" fill="#24292f">Input: UP / DOWN / OK via ADC resistor ladder on GPIO0</text>
+  <text x="76" y="228" font-size="12.5" fill="#24292f">Audio: ES8311 (I2S0) · Battery: CW2017 (I2C0 shared bus)</text>
+  <text x="76" y="248" font-size="12.5" fill="#24292f">USB-Serial-JTAG console + FAP screenshot / key-injection protocol</text>
+
+  <!-- Partitions -->
+  <rect x="60" y="278" width="600" height="196" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="300" font-size="13" font-weight="bold" fill="#24292f">Flash partitions (partitions.csv)</text>
+  <rect x="76" y="312" width="400" height="34" rx="4" fill="#e6ffed" stroke="#1a7f37"/>
+  <text x="88" y="334" font-size="12.5" fill="#1a7f37">factory app — 3 MB (full firmware, boot) </text>
+  <rect x="76" y="352" width="400" height="34" rx="4" fill="#fff8c5" stroke="#9a6700"/>
+  <text x="88" y="374" font-size="12.5" fill="#9a6700">protected cardid @ 0x356000 — device identity</text>
+  <rect x="76" y="392" width="400" height="34" rx="4" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="88" y="414" font-size="12.5" fill="#0969da">permanent Recovery @ 0x700000 (hold UP 5 s to enter)</text>
+  <rect x="488" y="312" width="160" height="80" rx="4" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="498" y="334" font-size="12" fill="#24292f">imgstore</text>
+  <text x="498" y="352" font-size="11" fill="#57606a">128 KB / 4 slots</text>
+  <text x="498" y="368" font-size="11" fill="#57606a">WeChat QR JPEGs</text>
+  <rect x="488" y="398" width="160" height="34" rx="4" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="498" y="420" font-size="12" fill="#24292f">NVS — profile · PIN hash</text>
+  <text x="76" y="456" font-size="12" fill="#57606a">App profile: name / age / blood type / contacts / address / health notes (versioned struct, demo flag)</text>
+
+  <!-- Firmware -->
+  <rect x="60" y="488" width="600" height="108" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="76" y="510" font-size="13" font-weight="bold" fill="#24292f">Application (main/)</text>
+  <text x="76" y="532" font-size="12.5" fill="#24292f">ui_safety.c — 5 display pages + full-screen QR · safety_portal.c — local setup portal</text>
+  <text x="76" y="552" font-size="12.5" fill="#24292f">safety_profile.c / safety_store.c — profile &amp; PIN (salt + SHA-256 only)</text>
+  <text x="76" y="572" font-size="12.5" fill="#24292f">jpeg_store.c / jpeg_view.c — QR images · pin_throttle.c — 5 fails → 60 s lock</text>
+  <text x="76" y="592" font-size="12.5" fill="#24292f">fap_screenshot.c — on-device acceptance over USB-Serial-JTAG</text>
+
+  <!-- ================= Phone / family (right) ================= -->
+  <rect x="940" y="100" width="620" height="560" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="960" y="128" font-size="16" font-weight="bold" fill="#0969da">PHONE / FAMILY — setup &amp; reading</text>
+
+  <rect x="960" y="144" width="580" height="150" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="976" y="166" font-size="13" font-weight="bold" fill="#24292f">First setup (portal, local hotspot only)</text>
+  <text x="976" y="188" font-size="12.5" fill="#24292f">1. Scan the Wi-Fi QR shown by the device on first boot</text>
+  <text x="976" y="208" font-size="12.5" fill="#24292f">2. Join the password-protected hotspot, open http://192.168.4.1</text>
+  <text x="976" y="228" font-size="12.5" fill="#24292f">3. Fill in the safety profile and upload up to 4 WeChat QR codes</text>
+  <text x="976" y="248" font-size="12.5" fill="#24292f">   (family / backup / community-doctor / other; 28 KB max per image)</text>
+  <text x="976" y="268" font-size="12.5" fill="#24292f">4. Save → profile sealed to NVS, QR JPEGs to imgstore, Wi-Fi off</text>
+
+  <rect x="960" y="308" width="580" height="120" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="976" y="330" font-size="13" font-weight="bold" fill="#24292f">Daily use (fully offline)</text>
+  <text x="976" y="352" font-size="12.5" fill="#24292f">UP / DOWN page through 5 pages; OK shows a QR full screen</text>
+  <text x="976" y="372" font-size="12.5" fill="#24292f">Long-press OK re-opens setup (PIN required after configuration)</text>
+  <text x="976" y="392" font-size="12.5" fill="#24292f">60 s without input → deep sleep; any function key wakes</text>
+  <text x="976" y="412" font-size="12.5" fill="#24292f">A stranger or passer-by can read the card without any app</text>
+
+  <rect x="960" y="442" width="580" height="154" rx="6" fill="#fff5f5" stroke="#cf222e"/>
+  <text x="976" y="464" font-size="13" font-weight="bold" fill="#cf222e">Privacy &amp; safety boundary</text>
+  <text x="976" y="486" font-size="12.5" fill="#24292f">Profile stays in NVS; QR images stay in imgstore — nothing is uploaded</text>
+  <text x="976" y="506" font-size="12.5" fill="#24292f">PIN stored as salt + SHA-256 digest; brute force throttled on the portal</text>
+  <text x="976" y="526" font-size="12.5" fill="#24292f">Wi-Fi + local web server run only during setup; BLE disabled in normal use</text>
+  <text x="976" y="546" font-size="12.5" fill="#24292f">Full address is opt-in; phone numbers are masked by default</text>
+  <text x="976" y="566" font-size="12.5" fill="#24292f">Not a medical device — it does not replace emergency services or care</text>
+
+  <!-- Data flow arrows -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0969da"/>
+    </marker>
+  </defs>
+  <line x1="680" y1="200" x2="940" y2="200" stroke="#0969da" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="760" y="188" font-size="12.5" font-weight="bold" fill="#0969da">hotspot + portal (192.168.4.1)</text>
+  <line x1="940" y1="360" x2="680" y2="360" stroke="#0969da" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="742" y="382" font-size="12.5" font-weight="bold" fill="#0969da">saved profile + QR</text>
+  <text x="742" y="400" font-size="11.5" fill="#57606a">→ NVS + imgstore, Wi-Fi off</text>
+
+  <!-- Footer -->
+  <rect x="40" y="700" width="1520" height="52" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="60" y="732" font-size="14" fill="#24292f">Release artifact: <tspan font-weight="bold">build/FoloToy-AI-Passport-full.bin</tspan> + SHA256SUMS.txt · MIT License · Upstream: FoloToy/ai-passport</text>
+</svg>
