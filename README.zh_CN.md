@@ -54,14 +54,6 @@ Senior Safety Card（健康信息卡）是基于 FoloToy AI Passport（ESP32-C3 
 
 ![设备多视图](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/brand/ai-passport-views.jpg)
 
-设备与数据流架构（硬件、Flash 分区、本地设置 portal、隐私边界）：
-
-![设备与数据流架构](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-architecture.svg)
-
-卡片生成与日常使用流程（首次开机 → 本地设置 → 离线展示 → 维护与验收）：
-
-![卡片生成与使用流程](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-flow.svg)
-
 ## 快速开始
 
 **环境**：ESP-IDF 5.5.3（`IDF_PATH` 请使用正斜杠，官方 `recovery_boot_hook` 的 CMake 在反斜杠路径下会解析失败）、Python 3（含 `esptool`）。

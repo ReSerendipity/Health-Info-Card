@@ -54,14 +54,6 @@ Device multi-angle views:
 
 ![Device views](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/brand/ai-passport-views.jpg)
 
-Device and data-flow architecture (hardware, Flash partitions, local setup portal, privacy boundary):
-
-![Device and data-flow architecture](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-architecture.svg)
-
-Setup and daily-use flow (first boot → local setup → offline display → maintenance and verification):
-
-![Setup and daily-use flow](https://gcore.jsdelivr.net/gh/ReSerendipity/Health-Info-Card@main/docs/assets/readme-health-info-card-flow.svg)
-
 ## Quick start
 
 **Environment**: ESP-IDF 5.5.3 (`IDF_PATH` must use forward slashes — the official `recovery_boot_hook` CMake breaks on backslash paths), Python 3 (with `esptool`).
