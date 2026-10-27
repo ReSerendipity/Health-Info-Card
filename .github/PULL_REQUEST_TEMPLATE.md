@@ -41,12 +41,12 @@ Commands run:
 - [ ] I updated authoritative documentation for changed hardware facts or durable behavior.
 - [ ] I updated `docs/CHANGELOG.md` if this changes user-visible behavior, compatibility, or release workflow.
 - [ ] I removed credentials, private device links, personal data, and unsanitized logs.
-- [ ] 新增 / 替换 README 展示图：图为本次新拍（非仓内截图归档复用），已附下方来源清单，且文件名带 `-YYYYMMDD` 后缀未做同名覆盖
+- [ ] Adding / replacing README showcase images: images are newly captured in this PR (not reused from in-repo screenshot archives), the source table below is filled in, and filenames carry a `-YYYYMMDD` suffix with no same-name overwrite
 
-## 截图来源清单（仅当本次新增 / 替换 README 展示图）
+## Screenshot provenance (only when adding / replacing README showcase images)
 
-不适用时整段删除。每条一图，缺一栏即视为未证（治理规范 §8.1）：
+Delete this whole section when not applicable. One row per image; a missing field means unproven (governance spec §8.1):
 
-| 图片文件 | 拍摄方式（真机 / 云电脑 / 模拟器 / 本机） | 会话或主机标识 | 启动命令与端口 | GPU / 模型加载状态 | 截图工具与时间 |
+| Image file | Capture method (real device / cloud desktop / emulator / local) | Session or host ID | Launch command and port | GPU / model load state | Tool and time |
 |---|---|---|---|---|---|
 |  |  |  |  |  |  |
