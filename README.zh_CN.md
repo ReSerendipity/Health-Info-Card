@@ -14,6 +14,7 @@
 [![Last commit](https://img.shields.io/github/last-commit/ReSerendipity/Health-Info-Card)](https://github.com/ReSerendipity/Health-Info-Card/commits/main)
 [![Top language](https://img.shields.io/github/languages/top/ReSerendipity/Health-Info-Card)](https://github.com/ReSerendipity/Health-Info-Card)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](.github/CONTRIBUTING.md)
+[![治理规范](https://img.shields.io/badge/governance-ReSerendipity%2F.github-blue)](https://github.com/ReSerendipity/.github/tree/main/governance)
 
 ---
 

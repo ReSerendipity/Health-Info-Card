@@ -14,6 +14,7 @@ This is an **ESP-IDF 5.5.3 / ESP32-C3 embedded firmware project**: there is no d
 [![Last commit](https://img.shields.io/github/last-commit/ReSerendipity/Health-Info-Card)](https://github.com/ReSerendipity/Health-Info-Card/commits/main)
 [![Top language](https://img.shields.io/github/languages/top/ReSerendipity/Health-Info-Card)](https://github.com/ReSerendipity/Health-Info-Card)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](.github/CONTRIBUTING.md)
+[![Governance](https://img.shields.io/badge/governance-ReSerendipity%2F.github-blue)](https://github.com/ReSerendipity/.github/tree/main/governance)
 
 ---
 
