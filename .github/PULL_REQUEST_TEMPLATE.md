@@ -41,3 +41,12 @@ Commands run:
 - [ ] I updated authoritative documentation for changed hardware facts or durable behavior.
 - [ ] I updated `docs/CHANGELOG.md` if this changes user-visible behavior, compatibility, or release workflow.
 - [ ] I removed credentials, private device links, personal data, and unsanitized logs.
+- [ ] Adding / replacing README showcase images: images are newly captured in this PR (not reused from in-repo screenshot archives), the source table below is filled in, and filenames carry a `-YYYYMMDD` suffix with no same-name overwrite
+
+## Screenshot provenance (only when adding / replacing README showcase images)
+
+Delete this whole section when not applicable. One row per image; a missing field means unproven (governance spec §8.1):
+
+| Image file | Capture method (real device / cloud desktop / emulator / local) | Session or host ID | Launch command and port | GPU / model load state | Tool and time |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
